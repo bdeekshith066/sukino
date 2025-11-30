@@ -7,9 +7,9 @@ import { ChevronLeft, ChevronRight, Clock, Flame, Instagram, MapPin, Phone } fro
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 
-export default function MenuPage() {
+function MenuContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState<string>(
@@ -360,6 +360,21 @@ export default function MenuPage() {
         </footer>
       </div>
     </div>
+  );
+}
+
+export default function MenuPage() {
+  return (
+    <Suspense fallback={
+      <div className="pt-4 sm:pt-6 pb-0 bg-[#faf9f7] relative min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-olive-700 mx-auto mb-4"></div>
+          <p className="text-olive-600">Loading menu...</p>
+        </div>
+      </div>
+    }>
+      <MenuContent />
+    </Suspense>
   );
 }
 
