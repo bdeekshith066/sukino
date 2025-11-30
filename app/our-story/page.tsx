@@ -140,7 +140,7 @@ export default function OurStoryPage() {
             <div className="mt-20 sm:mt-24 text-center animate-fade-in-up" style={{ animationDelay: '900ms' }}>
               <div className="inline-block bg-cream-50/60 backdrop-blur-sm rounded-2xl px-8 py-6 border border-olive-200/50 shadow-lg">
                 <p className="text-olive-700 text-sm sm:text-base italic max-w-2xl">
-                  "In every cup, a story. In every moment, a memory. Welcome to Sukino."
+                  &quot;In every cup, a story. In every moment, a memory. Welcome to Sukino.&quot;
                 </p>
               </div>
             </div>
