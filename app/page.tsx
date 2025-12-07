@@ -3,14 +3,14 @@
 import TypingAnimation from "@/components/typing-animation";
 import { Button } from "@/components/ui/button";
 import {
-  ArrowRight,
-  ChevronRight,
-  Clock,
-  Instagram,
-  MapPin,
-  Phone,
-  Play,
-  X,
+    ArrowRight,
+    ChevronRight,
+    Clock,
+    Instagram,
+    MapPin,
+    Phone,
+    Play,
+    X,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -423,11 +423,11 @@ export default function Home() {
 
           {/* Copyright */}
           <div className="mt-8 pt-6 pb-2 border-t border-olive-200/50">
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-2 text-sm text-olive-600">
-              <p className="text-right sm:text-right w-full sm:w-auto">
+            <div className="flex flex-col items-center gap-2 text-base text-olive-600 text-center">
+              <p>
                 © {new Date().getFullYear()} SUKINO Cafe & Kitchen. All rights reserved.
               </p>
-              <p className="text-left sm:text-left w-full sm:w-auto">
+              <p>
                 Developed by{" "}
                 <a 
                   href="https://www.linkedin.com/in/deekshith2912/" 

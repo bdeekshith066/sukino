@@ -39,7 +39,7 @@ export default function SiteHeader() {
       className={`sticky top-0 z-50 transition-all duration-500 ease-out ${
         scrolled
           ? "bg-cream-50/95 backdrop-blur-lg shadow-md border-b border-olive-100"
-          : "bg-transparent"
+          : "bg-cream-50/90 backdrop-blur-sm"
       }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
@@ -64,26 +64,22 @@ export default function SiteHeader() {
           </Link>
 
           {/* Desktop Navigation - moved right */}
-          <ul className="hidden md:flex items-center gap-6 lg:gap-8 mr-2 sm:mr-4">
+          <ul className="hidden md:flex items-center gap-2 lg:gap-3 mr-2 sm:mr-4">
             {navItems.map((item) => {
               const active = isActive(item.href);
               return (
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className={`relative text-base font-sans font-bold uppercase tracking-wider group transition-all duration-300 ${
+                    className={`relative text-base font-sans font-bold uppercase tracking-wider group transition-all duration-300 px-4 py-2 rounded-lg ${
                       active
-                        ? "text-olive-900"
-                        : "text-olive-700 hover:text-olive-900"
+                        ? "bg-olive-700 text-cream-50 shadow-md"
+                        : "bg-cream-100 text-olive-800 hover:bg-olive-50 hover:text-olive-900 border border-olive-200"
                     }`}
                   >
                     <span className="relative z-10">
                       {item.label}
                     </span>
-                    {/* Single underline for both active and hover */}
-                    <span className={`absolute bottom-0 left-0 h-0.5 bg-olive-600 transition-all duration-300 ${
-                      active ? "w-full" : "w-0 group-hover:w-full"
-                    }`}></span>
                   </Link>
                 </li>
               );
@@ -121,7 +117,7 @@ export default function SiteHeader() {
                     className={`block text-base font-sans font-bold uppercase tracking-wide py-3 px-4 rounded-lg transition-all duration-300 ${
                       active
                         ? "bg-olive-700 text-cream-50 shadow-md"
-                        : "text-olive-700 hover:text-olive-900 hover:bg-olive-50"
+                        : "bg-cream-100 text-olive-800 hover:bg-olive-50 hover:text-olive-900 border border-olive-200"
                     }`}
                   >
                     {item.label}

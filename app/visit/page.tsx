@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, Clock, Instagram, MapPin, Navigation, Phone } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 
@@ -32,11 +33,18 @@ export default function VisitPage() {
 
   return (
     <div className="pt-4 sm:pt-6 pb-0 relative overflow-hidden bg-[#faf9f7] min-h-screen">
-      {/* Enhanced Background with pattern */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-olive-100/15 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-accent-100/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-olive-50/10 rounded-full blur-3xl"></div>
+      {/* Background Image */}
+      <div className="fixed inset-0 z-0">
+        <Image
+          src="/images/bg2.png"
+          alt="Background"
+          fill
+          className="object-cover"
+          priority
+          quality={90}
+        />
+        {/* Overlay to maintain readability */}
+        <div className="absolute inset-0 bg-[#faf9f7]/50"></div>
       </div>
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl relative z-10">
@@ -332,11 +340,11 @@ export default function VisitPage() {
 
           {/* Copyright */}
           <div className="mt-8 pt-6 pb-2 border-t border-olive-200/50">
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-2 text-sm text-olive-600">
-              <p className="text-right sm:text-right w-full sm:w-auto">
+            <div className="flex flex-col items-center gap-2 text-base text-olive-600 text-center">
+              <p>
                 © {new Date().getFullYear()} SUKINO Cafe & Kitchen. All rights reserved.
               </p>
-              <p className="text-left sm:text-left w-full sm:w-auto">
+              <p>
                 Developed by{" "}
                 <a 
                   href="https://www.linkedin.com/in/deekshith2912/" 
