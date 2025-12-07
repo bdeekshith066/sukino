@@ -21,31 +21,35 @@ export default function SiteHeader() {
       return;
     }
 
-    // Function to check if section is at the top of viewport
+    // Function to check if hero section is still at the top
     const checkSectionPosition = () => {
       const rect = heroSection.getBoundingClientRect();
-      // Consider section at top if it's within the first 200px of viewport
-      // This accounts for header height and some padding
-      const isAtTop = rect.top <= 200 && rect.bottom > 100;
-      setIsHeroVisible(isAtTop);
+      const headerHeight = 120; // Header height with padding
+      
+      // Hero is at top if the top edge of hero is still visible (above or near the header)
+      // Once the top of hero scrolls past the header area, show white background
+      const isHeroAtTop = rect.top <= headerHeight;
+      setIsHeroVisible(isHeroAtTop);
     };
 
     // Check initial state after a small delay to ensure DOM is ready
     setTimeout(checkSectionPosition, 100);
 
-    // Create IntersectionObserver to detect when hero section is at the top
+    // Create IntersectionObserver to detect when hero section scrolls past
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           const rect = entry.boundingClientRect;
-          // Section is at top if it's within the first 200px of viewport
-          const isAtTop = rect.top <= 200 && rect.bottom > 100;
-          setIsHeroVisible(isAtTop);
+          const headerHeight = 120;
+          
+          // Hero is at top if its top edge hasn't scrolled past the header
+          const isHeroAtTop = rect.top <= headerHeight;
+          setIsHeroVisible(isHeroAtTop);
         });
       },
       {
-        threshold: [0, 0.1], // Check at 0% and 10% visibility
-        rootMargin: "-200px 0px 0px 0px", // Check if section top is within 200px from top
+        threshold: 0, // Trigger immediately when intersection changes
+        rootMargin: `-${120}px 0px 0px 0px`, // Account for header height
       }
     );
 
@@ -78,15 +82,18 @@ export default function SiteHeader() {
     return pathname.startsWith(href);
   };
 
-  // For our-story page, always show white background
+  // For our-story and home page, always show background
   const isOurStoryPage = pathname === "/our-story";
-  const shouldShowWhite = isOurStoryPage || !isHeroVisible;
+  const isHomePage = pathname === "/";
+  const shouldShowBackground = isOurStoryPage || isHomePage || !isHeroVisible;
 
   return (
     <header
       className={`sticky top-0 z-50 transition-all duration-500 ease-out ${
-        shouldShowWhite
-          ? "bg-white backdrop-blur-md shadow-sm border-b border-olive-200/50"
+        shouldShowBackground
+          ? isHomePage
+            ? "bg-cream-50/95 backdrop-blur-md shadow-sm border-b border-olive-200/50"
+            : "bg-white backdrop-blur-md shadow-sm border-b border-olive-200/50"
           : "bg-transparent"
       }`}
     >
