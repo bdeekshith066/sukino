@@ -7,18 +7,62 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function SiteHeader() {
-  const [scrolled, setScrolled] = useState(false);
+  const [isHeroVisible, setIsHeroVisible] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+    // Find the hero section or first section
+    const heroSection = document.getElementById("hero") || document.querySelector("section:first-of-type");
+    
+    if (!heroSection) {
+      // If no hero section found, default to scrolled state
+      setIsHeroVisible(false);
+      return;
+    }
+
+    // Function to check if section is at the top of viewport
+    const checkSectionPosition = () => {
+      const rect = heroSection.getBoundingClientRect();
+      // Consider section at top if it's within the first 200px of viewport
+      // This accounts for header height and some padding
+      const isAtTop = rect.top <= 200 && rect.bottom > 100;
+      setIsHeroVisible(isAtTop);
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    // Check initial state after a small delay to ensure DOM is ready
+    setTimeout(checkSectionPosition, 100);
+
+    // Create IntersectionObserver to detect when hero section is at the top
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const rect = entry.boundingClientRect;
+          // Section is at top if it's within the first 200px of viewport
+          const isAtTop = rect.top <= 200 && rect.bottom > 100;
+          setIsHeroVisible(isAtTop);
+        });
+      },
+      {
+        threshold: [0, 0.1], // Check at 0% and 10% visibility
+        rootMargin: "-200px 0px 0px 0px", // Check if section top is within 200px from top
+      }
+    );
+
+    observer.observe(heroSection);
+
+    // Also listen to scroll for more accurate detection
+    const handleScroll = () => {
+      checkSectionPosition();
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [pathname]); // Re-run when route changes
 
   const navItems = [
     { href: "/", label: "Home" },
@@ -34,16 +78,20 @@ export default function SiteHeader() {
     return pathname.startsWith(href);
   };
 
+  // For our-story page, always show white background
+  const isOurStoryPage = pathname === "/our-story";
+  const shouldShowWhite = isOurStoryPage || !isHeroVisible;
+
   return (
     <header
       className={`sticky top-0 z-50 transition-all duration-500 ease-out ${
-        scrolled
-          ? "bg-cream-50/95 backdrop-blur-lg shadow-md border-b border-olive-100"
-          : "bg-cream-50/90 backdrop-blur-sm"
+        shouldShowWhite
+          ? "bg-white backdrop-blur-md shadow-sm border-b border-olive-200/50"
+          : "bg-transparent"
       }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
-        <nav className="flex items-center justify-between py-2 sm:py-3">
+        <nav className="flex items-center justify-between py-2 sm:py-3 lg:pt-4">
           {/* Logo - moved left */}
           <Link 
             href="/" 
@@ -74,7 +122,7 @@ export default function SiteHeader() {
                     className={`relative text-base font-sans font-bold uppercase tracking-wider group transition-all duration-300 px-4 py-2 rounded-lg ${
                       active
                         ? "bg-olive-700 text-cream-50 shadow-md"
-                        : "bg-cream-100 text-olive-800 hover:bg-olive-50 hover:text-olive-900 border border-olive-200"
+                        : "bg-white text-olive-800 hover:bg-cream-50 hover:text-olive-900 border border-olive-200"
                     }`}
                   >
                     <span className="relative z-10">
@@ -117,7 +165,7 @@ export default function SiteHeader() {
                     className={`block text-base font-sans font-bold uppercase tracking-wide py-3 px-4 rounded-lg transition-all duration-300 ${
                       active
                         ? "bg-olive-700 text-cream-50 shadow-md"
-                        : "bg-cream-100 text-olive-800 hover:bg-olive-50 hover:text-olive-900 border border-olive-200"
+                        : "bg-white text-olive-800 hover:bg-cream-50 hover:text-olive-900 border border-olive-200"
                     }`}
                   >
                     {item.label}
